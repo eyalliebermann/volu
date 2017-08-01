@@ -4,13 +4,13 @@ node_js:
 cache:
   yarn: true
 before_install:
-  - npm install -g exp yarn
+  - npm install -g yarn
 install:
   - yarn install
 script:
   - yarn run lint
 deploy:
   provider: script
-  script: exp login --username $EXP_USER --password $EXP_PASS && exp publish
+  script: yarn install && yarn run publish
   on:
     branch: master

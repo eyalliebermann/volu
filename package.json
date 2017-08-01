@@ -19,7 +19,8 @@
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test": "node node_modules/jest/bin/jest.js --watch",
-    "lint": "node node_modules/eslint/bin/eslint.js --ignore-pattern node_modules --color App webtask.io"
+    "lint": "node node_modules/eslint/bin/eslint.js --ignore-pattern node_modules --color App webtask.io",
+    "publish": "node node_modules/exp/bin/exp.js login --username $EXP_USER --password $EXP_PASS && node node_modules/exp/bin/exp.js publish -q"
   },
   "jest": {
     "preset": "jest-expo"
