@@ -3,6 +3,7 @@ import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {phonecall, text} from 'react-native-communications';
 import RoundButton from './RoundButton';
 import {AppStyles, lightGray, unit, unitSpace} from './Styles';
+import {logEvent} from './Logger';
 
 
 export default class ShowMessagesScreen extends React.Component {
@@ -10,10 +11,12 @@ export default class ShowMessagesScreen extends React.Component {
         const {params} = this.props.navigation.state;
 
         const _onCallPress = () => {
+            logEvent('message screen', 'call button', params.id);
             phonecall(params.owner.mobile, false);
         };
 
         const _onMessagePress = () => {
+            logEvent('message screen', 'text button', params.id);
             text(params.owner.mobile, 'אני אשמח להצטרף! אפשר לשמוע עוד פרטים?');
         };
 

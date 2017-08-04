@@ -2,12 +2,10 @@ import React from 'react';
 import {ActivityIndicator, Platform, StatusBar, Text} from 'react-native';
 import {StackNavigator} from 'react-navigation';
 import {graphql, QueryRenderer} from 'react-relay';
-import winston from 'winston';
 import {environment} from './Graphql';
 import ShowMessagesScreen from './ShowMessageScreen';
 import MessagesScreen from './MessagesScreen';
 import {registerExpoToken} from './PushNotifications';
-import CreateDeviceMutation from './CreateDeviceMutation';
 
 class MessagesScreenWithQuery extends React.Component {
     render() {
@@ -40,11 +38,7 @@ class MessagesScreenWithQuery extends React.Component {
     }
 
     componentDidMount() {
-        registerExpoToken()
-            .then((expoToken) => {
-                CreateDeviceMutation(environment, expoToken);
-            })
-            .catch(err => winston.error(err));
+        registerExpoToken();
     }
 }
 

@@ -2,10 +2,9 @@
 import React from 'react';
 import {AppState, FlatList, StyleSheet, View} from 'react-native';
 import {createRefetchContainer, graphql} from 'react-relay';
-import {Notifications} from 'expo';
-import winston from 'winston';
 import MessagesItem from './MessagesItem';
 import {lightGray} from './Styles';
+import {logEvent, wakeMeUp} from './Logger';
 
 
 class MessagesScreen extends React.Component {
@@ -28,19 +27,15 @@ class MessagesScreen extends React.Component {
 
     componentDidMount() {
         AppState.addEventListener('change', this._onAppStateActive);
-        this._notificationSubscription = Notifications.addListener(this._handleNotification);
     }
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._onAppStateActive);
     }
 
-    _handleNotification = (notification) => {
-        this.setState({notification: notification});
-    };
-
     _onAppStateActive = (state) => {
         if (state === 'active') {
+            logEvent('root', 'app opened');
             this._onRefresh();
         }
     };
@@ -57,9 +52,9 @@ class MessagesScreen extends React.Component {
 
     _onRefreshFinished = (error) => {
         if (error) {
-            winston.error(
-                'refresh failed with %s',
-                JSON.stringify(error));
+            wakeMeUp('message list', 'refresh failed', error);
+        } else {
+            logEvent('message list', 'refresh');
         }
         this.setState({refreshing: false});
     };
@@ -71,6 +66,7 @@ class MessagesScreen extends React.Component {
     };
 
     _onPressItem = (id: string) => {
+        logEvent('message list', 'select message', id);
         this.props.navigation.navigate('Message', this._findMessage(id));
     };
 
